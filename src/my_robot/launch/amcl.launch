@@ -61,6 +61,8 @@
     <param name="global_costmap/robot_base_frame" value="robot_footprint"/>
     <param name="local_costmap/global_frame" value="odom"/>
     <param name="local_costmap/robot_base_frame" value="robot_footprint"/>
+    <param name="recovery_behaviors" value=" [{name: conservative_reset, type: clear_costmap_recovery/ClearCostmapRecovery}]"/>
+    <param name="clearing_rotation_allowed" value="false"/>
 
   </node>
 
