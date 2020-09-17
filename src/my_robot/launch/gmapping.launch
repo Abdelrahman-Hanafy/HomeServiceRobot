@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+  <!-- Launch other relevant files-->
+
+
+  <node name="slam_gmapping" pkg="gmapping" type="slam_gmapping" output="screen">
+    <param name="base_frame" value="robot_footprint"/>
+    <param name="maxUrange" value="6.0"/>
+    <param name="maxRange" value="8.0"/>
+    <param name="minimumScore" value="200"/>
+    <param name="srr" value="0.01"/>
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.01"/>
+    <param name="stt" value="0.02"/>
+    <param name="linearUpdate" value="0.5"/>
+    <param name="particles" value="80"/>
+    <param name="xmin" value="-30.0"/>
+    <param name="ymin" value="-30.0"/>
+    <param name="xmax" value="30.0"/>
+    <param name="ymax" value="30.0"/>
+
+    <remap from="scan" to="scan"/>
+
+  </node>
+
+
+</launch>
