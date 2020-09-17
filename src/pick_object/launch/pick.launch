@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+  <!-- Pick Objects -->
+  <node name="pick_object" pkg="pick_object" type="simple_navigation_goals" output="screen"/>
+
+
+</launch>
