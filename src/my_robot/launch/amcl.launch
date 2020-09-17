@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+<!-- TODO: Add nodes here -->
+<arg name="map_file" default="$(find my_robot)/map/map.yaml"/>
+<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- AMCL Node -->
+  <node name="amcl" pkg="amcl" type="amcl" output="screen">
+
+  <param name="gui_publish_rate"          value="10.0"/>
+  <param name="laser_max_beams"             value="60"/>
+  <param name="laser_max_range"           value="12.0"/>
+  <param name="min_particles"             value="500"/>
+  <param name="max_particles"             value="2000"/>
+  
+  <param name="laser_z_hit"               value="0.5"/>
+  <param name="laser_z_short"             value="0.05"/>
+  <param name="laser_z_max"               value="0.05"/>
+  <param name="laser_z_rand"              value="0.5"/>
+
+  <param name="odom_frame_id" value="odom"/>
+  <param name="odom_model_type" value="diff"/>
+  <param name="base_frame_id" value="robot_footprint"/>
+  <param name="global_frame_id" value="map"/>
+  <param name="resample_interval"         value="1"/>
+
+  
+  </node>
+
+  <!-- Move base -->
+
+  <node pkg="nodelet" type="nodelet" name="navigation_velocity_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet mobile_base_nodelet_manager">
+    <rosparam file="$(find my_robot)/config/smoother.yaml" command="load"/>
+    <remap from="navigation_velocity_smoother/smooth_cmd_vel" to="cmd_vel_mux/input/navi"/>
+
+    <!-- Robot velocity feedbacks; use the default base configuration -->
+    <remap from="navigation_velocity_smoother/odometry" to="odom"/>
+    <remap from="navigation_velocity_smoother/robot_cmd_vel" to="mobile_base/commands/velocity"/>
+  </node>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find my_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find my_robot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    
+    <rosparam file="$(find my_robot)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/config/global_costmap_params.yaml" command="load" />
+
+    <rosparam file="$(find my_robot)/config/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/config/move_base_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/config/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/config/navfn_global_planner_params.yaml" command="load" />
+    
+    <remap from="cmd_vel" to="cmd_vel"/>
+    <remap from="odom" to="odom"/>
+
+    <!--param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/-->
+
+    <param name="global_costmap/global_frame" value="map"/>
+    <param name="global_costmap/robot_base_frame" value="robot_footprint"/>
+    <param name="local_costmap/global_frame" value="odom"/>
+    <param name="local_costmap/robot_base_frame" value="robot_footprint"/>
+
+  </node>
+
+</launch>
