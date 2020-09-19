@@ -7,6 +7,6 @@ xterm -e "roslaunch my_robot amcl.launch" &
 sleep 5
 xterm -e "roslaunch my_robot navigation.launch"&
 sleep 5 
-xterm -hold -e "roslaunch add_markers marker.launch"
+xterm -hold -e "roslaunch add_markers marker.launch"&
 sleep 5
 xterm -hold -e "roslaunch pick_object pick.launch " 
