@@ -5,10 +5,10 @@
 
 //Positions
 float pickUp[3] = {3.3, 2.5, 1.0};
-float dropOff[3] = {-1.0, 2.0, 1.0};
+float dropOff[3] = {7.0, 1.0, 1.0};
 
 double robot_x, robot_y;
-double DISTANCE_THRESHOLD = 0.01;
+double DISTANCE_THRESHOLD = 0.5;
 
 void robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg_amcl)
 {
@@ -42,9 +42,9 @@ int main( int argc, char** argv )
     marker.pose.orientation.z = 0.0;
     marker.pose.orientation.w = 1.0;
   // Set the scale of the marker -- 1x1x1 here means 1m on a side
-    marker.scale.x = 1.0;
-    marker.scale.y = 1.0;
-    marker.scale.z = 1.0;
+    marker.scale.x = 0.2;
+    marker.scale.y = 0.2;
+    marker.scale.z = 0.2;
   // Set the color -- be sure to set alpha to something non-zero!
     marker.color.r = 0.0f;
     marker.color.g = 1.0f;
@@ -73,11 +73,15 @@ int main( int argc, char** argv )
         marker.action = visualization_msgs::Marker::ADD;
         marker.pose.position.x = pickUp[0];
         marker.pose.position.y = pickUp[1];
+        ROS_INFO("X: %lf  Y: %lf",robot_x,robot_y);
+
       }
       else
       {
         state = 1;
         marker.action = visualization_msgs::Marker::DELETE;
+        ROS_INFO(" Robot reached PICK-UP");
+
       }
     }
 
@@ -107,6 +111,8 @@ int main( int argc, char** argv )
         marker.action = visualization_msgs::Marker::ADD;
         marker.pose.position.x = dropOff[0];
         marker.pose.position.y = dropOff[1];
+        ROS_INFO("Robot reached DROP OFF");
+
       }
     }
 

@@ -4,7 +4,7 @@
 
 //Positions
 float pickUp[3] = {3.3, 2.5, 1.0};
-float dropOff[3] = {-1.0, 2.0, 1.0};
+float dropOff[3] = {7.0, 1.0, 1.0};
 
 
 // Define a client for to send goal requests to the move_base server through a SimpleActionClient
